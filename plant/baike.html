@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.css" rel="stylesheet" />
+		<link href="css/baike.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">植物百科</h1>
+		</header>
+		
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<!-- 植物名称 -->
+				<h3 id="plantName">植物名称</h3>
+				<!-- 植物科属 -->
+				<p id="keshu">XX科XX属植物</p>
+				<!-- 植物简要介绍 -->
+				<div class="description">植物介绍</div>
+				<!-- 名称科属列表 -->
+				<ul class="basicInfo">
+					<li><span>学名：</span>学名</li>
+					<li><span>别名：</span>别名</li>
+					<li><span>科：</span>科</li>
+					<li><span>属：</span>属</li>
+				</ul>
+				<!-- 示例图片 -->
+				<div class="img-box">
+					<div>
+						<img src="" >
+					</div>
+					<div>
+						<img src="" >
+					</div>
+					<div>
+						<img src="" >
+					</div>
+					<div>
+						<img src="" >
+					</div>
+				</div>
+				<!-- 其他信息 -->
+				<div class="info">
+					<!-- 相关诗词 -->
+					<h4>相关诗词</h4>
+					<div class="info-content">相关诗词</div>
+					<!-- 价值功用 -->
+					<h4>价值功用</h4>
+					<div class="info-content">价值功用</div>
+					<!-- 花语寓意 -->
+					<h4>花语寓意</h4>
+					<div class="info-content">花语寓意</div>
+					<!-- 分布地区 -->
+					<h4>分布地区</h4>
+					<div class="info-content">分布地区</div>
+					<!-- 名称来历 -->
+					<h4>名称来历</h4>
+					<div class="info-content">名称来历</div>
+					<!-- 养护技术 -->
+					<h4>养护技术</h4>
+					<div class="info-content">养护技术</div>
+					<!-- 表型特征 -->
+					<h4>表型特征</h4>
+					<div class="info-content">表型特征</div>
+					<!-- 花开时节 -->
+					<h4>花开时节</h4>
+					<div class="info-content">花开时节</div>
+					
+				</div>
+			</div>
+		</div>
+		
+		<script src="../js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			// 当plus准备就绪
+			
+			mui.plusReady(function(){
+				//获取当前webview对象
+				var webview = plus.webview.currentWebview()
+				//获取植物识别页面传输的百科数据
+				var baikeData = webview.baikeData
+				console.log(JSON.stringify(baikeData))
+				
+				// 显示植物名称
+				mui("#plantName")[0].innerHTML = baikeData.name
+				// 显示植物科属
+				mui("#keshu")[0].innerHTML = baikeData.family + baikeData.genus + "植物"
+				// 显示植物介绍
+				mui(".description")[0].innerHTML = baikeData.description
+				// 显示名称科属列表
+				mui(".basicInfo")[0].innerHTML = `<li><span>学名：</span>${baikeData.name}</li>
+						                          <li><span>别名：</span>${baikeData.aliasName}</li>
+						                          <li><span>科：</span>${baikeData.family}</li>
+						                          <li><span>属：</span>${baikeData.genus}</li>`
+				
+				// 获取图片数组
+				var imgs = baikeData.images
+				var str =``
+				// 循环生成图片html字符串
+				for(var i in imgs){
+					str = str + `<div>
+					                <img src="${imgs[i]}" >
+					            </div>`
+				}
+				// 修改图片信息
+				mui('.img-box')[0].innerHTML = str
+				
+				// 其他信息
+				info = baikeData.info
+				// 循环替换数据
+				for(var key in info){
+					if(info[key] == ''){
+						info[key] = '暂无数据'
+					}
+				}
+				mui('.info')[0].innerHTML = `<h4>相关诗词</h4>
+					                        <div class="info-content">${info.xgsc}</div>
+											<h4>价值功用</h4>
+											<div class="info-content">${info.jzgy}</div>
+											<h4>花语寓意</h4>
+											<div class="info-content">${info.hyyy}</div>
+											<h4>分布地区</h4>
+											<div class="info-content">${info.fbdq}</div>
+											<h4>名称来历</h4>
+											<div class="info-content">${info.mcll}</div>
+											<h4>养护技术</h4>
+											<div class="info-content">${info.yhjs}</div>
+											<h4>表型特征</h4>
+											<div class="info-content">${info.bxtz}</div>
+											<h4>花开时节</h4>
+											<div class="info-content">${info.hksj}</div>`
+			})
+			
+		</script>
+	</body>
+</html>
+
+
+

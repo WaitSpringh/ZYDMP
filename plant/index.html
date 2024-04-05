@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="../css/mui.css"/>
+	<style>
+		body {
+			height: 100vh;
+			background-image: url(images/bg.png);
+			background-size: 100% 100%;
+		}
+		.mui-content{
+			background-color: transparent;
+			margin-top: 20px;
+		}
+		.img-box{
+			height: 450px;
+			background-image: url(images/plantbg.png);
+			background-size: 100% 100%;
+			margin-top: 20px;
+			display: table-cell;
+			vertical-align: middle;
+			text-align: center;
+		}
+		#result_img {
+			width: 55%;
+		}
+		.icon-box {
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			height: 100px;
+			background-color: #76c4ff;
+			color: #FFFFFF;
+			font-size: 16px;
+			display: table;
+		}
+		.icon-box img {
+			width: 60px;
+		}
+		.icon-box div {
+			display: table-cell;
+			vertical-align: middle;
+			text-align: center;
+		}
+	</style>
+    
+</head>
+<body>
+	<!-- 标题栏 -->
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">植物识别</h1>
+	</header>
+	<!-- 主体内容 -->
+	<div class="mui-content">
+		<div class="img-box">
+			<img id="result_img" src="images/plantimg.png">
+		</div>
+		<!-- 底部图标 -->
+		<div class="icon-box">
+			<div id="start">
+			    <img src="images/icon_1.png"><br>
+			    <span>拍照识别</span>
+			</div>
+			<div id="search">
+			    <img src="images/icon_2.png"><br>
+			    <span>百科搜索</span>
+			</div>
+		</div>
+	</div>
+
+	
+	<script src="../js/root.js"></script>
+	<script src="../js/mui.js"></script>
+	<script>
+	  	mui.init();
+		
+		//点击“拍照识别”
+		mui("#start")[0].addEventListener("tap",function(){
+			//弹出系统选择按钮框
+			plus.nativeUI.actionSheet({
+				title: "植物识别",
+				cancel: "取消",
+				buttons: [
+					{title: "拍摄图片"}, 
+					{title: "从手机相册选择图片"}
+				]
+			}, function(event){
+				// console.log(event.index)
+				//判断点击的按钮
+				if(event.index==1){
+					capture()
+				}else if(event.index==2){
+					choose()
+				}
+			})
+		})
+		
+		// 启动摄像头进行拍照
+		function capture(){
+			// 获取摄像头管理对象
+			var camera = plus.camera.getCamera()
+			// 进行拍照操作
+			camera.captureImage(function(file){
+				// 获取绝对路径
+				var url = plus.io.convertLocalFileSystemURL(file)
+				// 在页面中显示拍摄的图片
+				mui('#result_img')[0].src = url
+				recognition(url)
+			})
+		}
+		
+		// 从手机相册选择图片
+		function choose(){
+			// 调用手机相册
+			plus.gallery.pick(
+				function(file){
+					// 在页面中显示选择的图片
+					mui("#result_img")[0].src = file
+					recognition(file)
+				}
+			)
+		}
+		
+		// 上传图片进行识别
+		function recognition(file){
+			//1.创建上传任务
+			var task = plus.uploader.createUpload(
+				// 服务器地址URL
+				root + "/plant/recognition", 
+				// 设置请求方式
+				{method:"POST"}, 
+				// 上传任务完成后的处理函数
+				function(upload, status){ 
+					// console.log("上传结果状态码" + status)
+					// console.log("服务器返回的数据" + upload.responseText)
+					if(status == 200){ // 判断是否上传成功
+						// 获取服务端返回的数据
+						var data = JSON.parse(upload.responseText)
+						// 判断是否识别成功
+						if(data.code == 0){
+							// 获取植物名称和植物介绍
+							var plantName = data.result.name
+							var plantDes = data.result.description
+							// 显示确认框
+							mui.confirm(plantDes, plantName, ["关闭", "查看百科信息"], function(event){
+								if(event.index == 1){ // 点击了“查看百科信息”按钮
+									// 跳转到百科页面
+									mui.openWindow({
+										url:"baike.html",
+										extras:{ // 向百科页面传输百科数据
+											baikeData:data.result
+										}
+									})
+								}
+							})
+						}else{
+							alert("图片识别失败，请重试！")
+						}
+					}else{
+						alert("图片上传失败，请重试！")
+					}
+				}
+			)
+			// 2.向上传任务中添加文件和数据
+			task.addFile(file, {key:"image"})
+			// 3.开始上传任务
+			task.start()			
+		}
+		
+		//点击“百科搜索”
+		mui("#search")[0].addEventListener("tap",function(){
+			// 跳转到百科搜索页面
+			mui.openWindow({
+				url:"search.html"
+			})
+		})
+	</script>
+</body>
+</html>
