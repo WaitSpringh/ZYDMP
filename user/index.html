@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+	<style type="text/css">
+		#head {
+			background-color: lightskyblue;
+			width: 100%;
+			height: 200px;
+			text-align: center;
+		}
+		#user {
+			width: 100px;
+			height: 100px;
+			margin-top: 40px;
+			border-radius: 50%;
+		}
+		.mui-pull-right {
+			color: gray;
+			margin-right: 25px;
+		}
+	</style>
+</head>
+<body>
+	<!-- 标题栏 -->
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">个人主页</h1>
+	</header>
+	<!-- 主体内容 -->
+	<div class="mui-content">
+		<!-- 头像部分 -->
+		<div id="head">
+			<!-- 头像 -->
+			<img id="user" src="images/user.png" >
+			<br>
+			<!-- 按钮 -->
+			<button id="btn" type="button" class="mui-btn mui-btn-warning">点击修改头像</button>
+		</div>
+		<!-- 个人信息列表部分 -->
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell" id="xingming">
+				<a class="mui-navigate-right">
+					<span>姓名：</span><span id="xm" class="mui-pull-right">请输入</span>
+				</a>
+			</li>
+			<li class="mui-table-view-cell" id="nianling">
+				<a class="mui-navigate-right">
+					<span>年龄：</span><span id="nl" class="mui-pull-right">请输入</span>
+				</a>
+			</li>
+			<li class="mui-table-view-cell" id="aihao">
+				<a class="mui-navigate-right">
+					<span>爱好：</span><span id="ah" class="mui-pull-right">请输入</span>
+				</a>
+			</li>
+			<li class="mui-table-view-cell" id="qianming">
+				<a class="mui-navigate-right">
+					<span>个性签名：</span><span id="qm" class="mui-pull-right">请输入</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	
+	
+	
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+	  	mui.init();
+		
+		//为列表行批量绑定单击事件
+		mui(".mui-table-view").on("tap",".mui-table-view-cell",function(){
+			//获取当前<li>中的<span>
+			var span = this.getElementsByTagName("span")
+			//获取第一个<span>中的文本
+			var text = span[0].innerHTML
+			//弹出mui输入对话框
+			mui.prompt(text,"请输入您的信息","请输入",["取消","确认"],function(e){
+				// console.log(e.index)
+				// console.log(e.value)
+				//如果点击了“确认”按钮
+				if(e.index == 1){
+					//修改元素中的内容
+					span[1].innerHTML = e.value
+					//将新的信息存储到本地
+					localStorage.setItem(span[1].id,e.value)
+				}
+			},"div")
+		})
+		
+		//获取id="btn"的按钮元素
+		var btn = document.getElementById("btn")
+		//为按钮绑定单击事件
+		btn.addEventListener("tap",function(){
+			//从系统相册选择图片
+			plus.gallery.pick(function(file){
+				//alert("选择图片成功！图片路径为：" + file)
+				//获取id="user"的<img>元素
+				var user = document.getElementById("user")
+				//修改<img>元素的src属性值
+				user.src = file
+				//将新头像地址存储到本地
+				localStorage.setItem("user",file)
+			})
+		})
+		
+		//判断本地存储中是否存有头像地址，如果有，则修改页面中对应的内容
+		var userImg = localStorage.getItem("user")
+		if(userImg != null){
+			document.getElementById("user").src = userImg
+		}
+		//判断本地存储中是否存有姓名，如果有，则修改页面中对应的内容
+		var xmText = localStorage.getItem("xm")
+		if(xmText != null){
+			document.getElementById("xm").innerHTML = xmText
+		}
+		//判断本地存储中是否存有年龄，如果有，则修改页面中对应的内容
+		var nlText = localStorage.getItem("nl")
+		if(nlText != null){
+			document.getElementById("nl").innerHTML = nlText
+		}
+		//判断本地存储中是否存有爱好，如果有，则修改页面中对应的内容
+		var ahText = localStorage.getItem("ah")
+		if(ahText != null){
+			document.getElementById("ah").innerHTML = ahText
+		}
+		//判断本地存储中是否存有个性签名，如果有，则修改页面中对应的内容
+		var qmText = localStorage.getItem("qm")
+		if(qmText != null){
+			document.getElementById("qm").innerHTML = qmText
+		}
+	
+	
+	</script>
+<a href="../more/min.html">更多信息</a>
+
+
+
+
+<p><strong>版权信息</strong><br>
+©2024壮猿的手机版权所有<br>
+												   壮猿的手机®<br>
+										在此提及的其他所有 商标 均是其各自所有人的财产<br>
+										Made in Hongkong with love<br>
+										<br>
+	</p>
+</body>	
+
+</html>
