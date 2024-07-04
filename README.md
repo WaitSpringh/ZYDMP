@@ -1,10 +1,18 @@
-# Zhuang Yuan’s mobile phone
-## Latest notification
+# 壮猿的手机
 
+## 关于本项目
 
-Nemo Cook is updating the repository readme, this may take a moment, please wait.
+本项目是NemoCook开发的开源项目，由猿编程提供基础模版
 
-## contact us
+## 开源许可证
+
+MIT
+
+## 其他
+
+没有其他可说的了
+
+## 联系我们
 
 [X](https://twitter.com/cloudnemocook)
 [Email](mailto:47830915g@gmail.com)
