@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>数据传输框架</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../css/mui.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .title-bar {
+            display: flex;
+            align-items: center;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 20px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .back-button .arrow {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 50px);
+        }
+
+        .sidebar {
+            width: 100%;
+            background-color: #f1f1f1;
+            padding: 20px;
+            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .content h2 {
+            margin-top: 0;
+        }
+
+        .content p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+
+            .sidebar {
+                width: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="title-bar">
+        <button class="back-button" onclick="history.back()">
+            <span class="arrow">&#8592;</span> 返回
+        </button>
+        <h1 class="title">数据传输框架</h1>
+    </header>
+    <div class="container">
+        <div class="sidebar">
+            <h3>导航</h3>
+            <ul>
+                <li><a href="#introduction">引言</a></li>
+                <li><a href="#adequacy">数据保护充分性认定</a></li>
+                <li><a href="#eu-us">欧盟委员会数据保护充分性认定</a></li>
+                <li><a href="#standard-contract">标准合同条款</a></li>
+            </ul>
+			<h2>《数据传输框架》</h2>
+        </div>
+        <div class="content">
+            <h2 id="introduction">引言</h2>
+            <p>我们维护着遍布世界各地的服务器，因此，我们处理您的信息时所用的服务器可能并不位于您所在的国家/地区。数据保护法律因国家/地区而异，而且不同国家/地区的数据保护力度也是有强有弱。无论我们在哪里处理您的信息，都会一律采用隐私权政策中所述的保护措施。另外，我们还会遵守与数据传输有关的特定法律框架，例如下文中介绍的法律框架。</p>
+            
+            <h2 id="adequacy">数据保护充分性认定</h2>
+            <p>欧盟委员会已认定欧洲经济区 (EEA) 以外的某些国家/地区对个人信息提供的保护很充分，这意味着可以从欧盟 (EU) 成员国、挪威、列支敦士登和冰岛向这些国家/地区传输数据。英国和瑞士采用了类似的数据保护充分性认定机制。我们依赖下方所列的数据保护充分性认定机制：</p>
+            
+            <h2 id="eu-us">欧盟委员会数据保护充分性认定</h2>
+            <p>英国数据保护充分性法规<br>
+            瑞士数据保护充分性认定<br>
+            EU-U.S. Data Privacy（欧盟-美国数据隐私权）及 Swiss-U.S. Data Privacy（瑞士-美国数据隐私权）框架<br>
+            正如我们的数据隐私权框架认证中所述，我们遵守美国商务部针对收集、使用和保留欧洲经济区 (EEA)、瑞士和英国境内用户个人信息而分别制定的欧盟-美国数据隐私权框架 (DPF)、瑞士-美国数据隐私权框架 (DPF) 以及英国对欧盟-美国 DPF 的扩展。YBC LLC（及其全资中国子公司，明确排除的除外）已证明其自身遵守 DPF 准则。如《壮猿的手机 隐私政策》的“数据的传输”部分中所述，对于根据“传输准则”(Onward Transfer Principle) 与第三方分享（以便第三方代表我们进行外部处理）的任何个人信息，壮猿的手机 仍需承担保护责任。</p>
+            
+            <p>对于我们采取的与 DPF 认证相关的隐私权做法，如果您有任何疑问，欢迎联系我们。我们受制于美国联邦贸易委员会的调查和执行权和中国的执法机构。您也可将起诉书转呈当地的数据保护机构，我们将与这些机构合作，共同解决您的问题。如 DPF 准则附录 I 中所述，在某些情况下，DPF 提供了启动具有约束力仲裁的权利，以便解决其他方式无法解决的投诉。</p>
+            
+            <p>目前，我们不依赖瑞士-美国 DPF 及英国对欧盟-美国 DPF 的扩展来将个人信息传输到美国。</p>
+            
+            <h2 id="standard-contract">标准合同条款</h2>
+            <p>标准合同条款 (SCC) 是各方之间的书面承诺，条款中提供了相应的数据保护措施，可作为从 EEA 向第三方国家/地区传输数据的安全依据。SCC 已获得欧盟委员会批准，使用 SCC 的各方不能对其作出修改（若要查看欧盟委员会采用的 SCC，请点击此处、此处和此处）。此类条款也获准用于英国和瑞士之外的国家/地区的数据传输。在要求遵循 SCC 以及未获得数据保护充分性认定的情况下，我们会根据 SCC 传输数据。如果想获取 SCC 的副本，您可以联系我们。</p>
+            
+            <p>我们可能还会将 SCC 纳入与使用其商业服务的客户签订的合约中，这些服务包括 壮猿的手机、The ape's phone 以及其他广告和评估类产品。</p>
+        </div>
+    </div>
+    <script src="js/mui.js"></script>
+    <script type="text/javascript">
+        mui.init()
+    </script>
+</body>
+
+</html>
+

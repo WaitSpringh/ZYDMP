@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>更多信息页面</title>
+    <!-- 引入css文件 -->
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <style type="text/css">
+        body {
+            background-image: url(images/bg.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            height: 100vh;
+            text-align: center;
+        }
+        #yuan {
+            margin-top: 150px;
+            height: 50vh;
+        }
+        #btn {
+            margin-top: 20px;
+        }
+        #icons {
+            position: fixed;
+            bottom: 30px;
+            left:0px;
+            right:0px;
+        }
+        .icon {
+            width: 60px;
+            height: 60px;
+            margin-left:20px;
+            margin-right:20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 壮猿 -->
+    <img id="yuan" src="images/stand.gif">
+    <br>
+    <!-- 按钮 -->
+    <button id="btn" type="button" class="mui-btn mui-btn-warning">按住按钮对壮猿讲话</button>
+    <!-- 四个图标 -->
+    <div id="icons">
+        <img class="icon" id="translate" src="images/icon-translate.png">
+        <img class="icon" id="plant" src="images/icon-plant.png">
+        <img class="icon" id="user" src="images/icon-user.png">
+        
+    </div>
+    
+    <!-- 引入js文件 -->
+    <script src="js/mui.min.js"></script>
+    <script src="js/root.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        mui.init({
+            gestureConfig: {
+                hold: true,
+                release: true
+            }
+        });
+        
+        var audio;
+        
+        mui("#btn")[0].addEventListener("hold", function() {
+            console.log("按住了按钮！");
+            mui("#yuan")[0].src = "images/listen.gif";
+            plus.nativeUI.showWaiting("正在聆听...");
+            audio = plus.audio.getRecorder();
+            audio.record({
+                format: "amr"
+            }, function(file) {
+                upload(file);
+            }, function() {
+                alert("录音失败！");
+            });
+        });
+        
+        mui("#btn")[0].addEventListener("release", function() {
+            audio.stop();
+            mui("#yuan")[0].src = "images/listen-end.gif";
+            plus.nativeUI.closeWaiting();
+        });
+        
+        function upload(file) {
+            plus.nativeUI.showWaiting("我听到了，请稍候...");
+            var task = plus.uploader.createUpload(root + "/aibot", {
+                method: "POST"
+            }, function(upload, status) {
+                plus.nativeUI.closeWaiting();
+                if (status == 200) {
+                    var result = JSON.parse(upload.responseText);
+                    if (result.code == 0) {
+                        mui("#yuan")[0].src = "images/speak.gif";
+                        var player = plus.audio.createPlayer(result.answer);
+                        player.play();
+                        player.addEventListener("ended", function() {
+                            mui("#yuan")[0].src = "images/stand.gif";
+                        });
+                    } else {
+                        alert("获取壮猿回复失败！请重新对壮猿讲话~");
+                    }
+                } else {
+                    alert("语音上传失败！请重新对壮猿讲话~");
+                }
+            });
+            task.addFile(file, { key: "voice" });
+            task.start();
+        }
+        
+        mui("#translate")[0].addEventListener("tap", function() {
+            mui.openWindow({
+                url: "translate/3n.html"
+            });
+        });
+        
+        mui("#user")[0].addEventListener("tap", function() {
+            mui.openWindow({
+                url: "user/index.html"
+            });
+        });
+        
+        mui("#plant")[0].addEventListener("tap", function() {
+            mui.openWindow({
+                url: "plant/index.html"
+            });
+        });
+        
+     
+        
+        mui.toast('“防御矩阵”已启动', { duration: 'long', type: 'div' });
+    </script>
+</body>
+</html>
+

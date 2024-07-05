@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>通知页面</title>
+    <link rel="stylesheet" href="../css/mui.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .title-bar {
+            display: flex;
+            align-items: center;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 20px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .back-button .arrow {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="title-bar">
+        <button class="back-button" onclick="history.back()">
+            <span class="arrow">&#8592;</span> 返回
+        </button>
+        <h1>小猿翻译</h1>
+    </header>
+    <div class="content">
+        <p>系统正在维护，给您带来的不便请谅解！<br> 壮猿的手机维护团队</p>
+    </div>
+    <script src="js/mui.js"></script>
+    <script type="text/javascript">
+        mui.init()
+    </script>
+</body>
+
+</html>
+
+
+

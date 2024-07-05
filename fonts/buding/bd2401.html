@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../css/mui.css">
+		<title>布丁24.06.09</title>
+		<style>
+			body {
+			    margin: 0;
+			    font-family: Arial, sans-serif;
+			}
+			
+			.title-bar {
+			    display: flex;
+			    align-items: center;
+			    background-color: #007BFF;
+			    color: white;
+			    padding: 10px 20px;
+			    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			}
+			
+			.back-button {
+			    display: flex;
+			    align-items: center;
+			    background: none;
+			    border: none;
+			    color: white;
+			    font-size: 16px;
+			    cursor: pointer;
+			    margin-right: 20px;
+			    padding: 5px 10px;
+			    border-radius: 4px;
+			    transition: background-color 0.3s ease;
+			}
+			
+			.back-button:hover {
+			    background-color: rgba(255, 255, 255, 0.2);
+			}
+			
+			.back-button .arrow {
+			    font-size: 20px;
+			    margin-right: 5px;
+			}
+			
+			.title {
+			    margin: 0;
+			    font-size: 24px;
+			    font-weight: bold;
+			}
+
+		</style>
+	</head>
+	<body>
+		<header class="title-bar">
+			        <button class="back-button" onclick="history.back()">
+			            <span class="arrow">&#8592;</span> 返回
+			        </button>
+			        <h1 class="title">补丁2.9.8（2024.6.09）</h1>
+		 </header>
+		<p>补丁现已实装，以下为详情。</p>
+		<p>1.重启了在北京，日本，美国的服务器</p>
+		<p>2.植入测试检测程序</p>
+		<p>3.对于以往的漏洞进行了修补</p>
+		<p>4.更改了“用户界面”部分信息的呈现方式</p>
+	</body>
+</html>

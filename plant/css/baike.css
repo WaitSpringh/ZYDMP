@@ -1,0 +1,70 @@
+ul {
+	list-style: none;
+	padding: 0;
+}
+body {
+	height: 100vh;
+	background-image: url(../images/bg.png);
+	background-size: 100% 100%;
+}
+.mui-content {
+	background-color: transparent;
+	line-height: 26px;
+}
+.mui-content-padded {
+	background-color: #ffffff;
+	padding: 10px;
+	border: 5px solid #76C4FF;
+	border-radius: 20px;
+}
+h3 {
+	margin-top: 10px;
+}
+/* 植物简要介绍 */
+.description {
+	text-indent: 32px;
+}
+/* 名称科属列表样式 */
+.basicInfo {
+	padding: 0px 20px;
+}
+.basicInfo li {
+	color: #3399ff;
+	line-height: 32px;
+	border-bottom: 1px dashed #dddddd;
+}
+.basicInfo span {
+	display: inline-block;
+	width: 60px;
+	color:#666666;
+}
+/* 示例图片 */
+.img-box {
+	display: table;
+	width: 100%;
+}
+.img-box div {
+	display: table-cell;
+	width: 20%;
+	height: 12vh;
+	padding: 3px;
+	vertical-align: middle;
+	text-align: center;
+}
+.img-box img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 10px;
+}
+/* 相关信息 */
+.info h4 {
+	margin-top: 20px;
+	margin-bottom: 6px;
+	color: #4F9CEE;
+}
+.info-content {
+	text-indent: 32px;
+}
+

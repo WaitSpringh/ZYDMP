@@ -1,0 +1,311 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>智能翻译</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<!-- 引入mui.css -->
+		<link href="../css/mui.css" rel="stylesheet" />
+		<!-- 引入picker组件css -->
+		<link href="css/mui.picker.min.css" rel="stylesheet" />
+		<style>
+			/* 设置页面背景 */
+			body {
+				background-image: url(images/bg.png);
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+				height: 100vh;
+			}
+			/* 设置主体内容样式 */
+			.mui-content {
+				background-color: transparent;
+			}
+			/* 设置文本域样式 */
+			textarea {
+				margin-top: 15px;
+				border: 6px solid #6dcbff;
+				border-radius: 20px;
+			}
+			/* 设置翻译按钮的样式 */
+			#fanyi {
+				width: 120px;
+				height: 40px;
+			}
+			/* 设置麦克风和照相机图标的样式 */
+			.icon {
+				width: 50px;
+				height: 50px;
+				margin-left: 10px;
+				margin-right: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- 标题栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">智能翻译</h1>
+		</header>
+		<!-- 主体内容 -->
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<!-- 语言切换按钮 -->
+				<div style="text-align: center;">
+					<button id="yuyanBtn" type="button" class="mui-btn">
+						<span id="yuyanSpan">自动检测</span>
+						<span class="mui-icon mui-icon-arrowdown"></span>
+					</button>
+				</div>
+				<!-- 待翻译内容 -->
+				<textarea rows="8" placeholder="请输入要翻译的内容"></textarea>
+				<!-- 立即翻译按钮 -->
+				<div style="text-align: right;">
+					<img id="fanyi" src="images/btn-fanyi.png">
+				</div>
+				<!-- 翻译结果 -->
+				<textarea rows="8" readonly></textarea>
+				<!-- 麦克风和照相机图标 -->
+				<div style="text-align: center;">
+					<img id="micIcon" class="icon" src="images/icon-mic.png">
+					<img id="cameraIcon" class="icon" src="images/icon-camera.png">
+				</div>
+			</div>
+		</div>
+		
+	
+		<!-- 引入mui.js -->
+		<script src="../js/mui.js"></script>
+		<!-- 引入picker组件js -->
+		<script src="js/mui.picker.min.js"></script>
+		<!-- 引入root.js -->
+		<script src="../js/root.js"></script>
+		<script type="text/javascript">
+			//mui组件初始化
+			mui.init({
+				//配置手势事件
+				gestureConfig:{
+					hold:true,
+					release:true
+				}
+			});
+			
+			// picker组件数据，可自行添加更多语言类型
+			var data = [
+				{text: "自动检测",from: 0,to: 0},
+				{text: "中 - 英",from: 1,to: 2}, 
+				{text: "英 - 中",from: 2,to: 1}, 
+				{text: "中 - 法",from: 1,to: 5},
+				{text: "法 - 中",from: 5,to: 1}, 
+				{text: "中 - 日",from: 1,to: 3},
+				{text: "日 - 中",from: 3,to: 1},
+				{text: "中 - 韩",from: 1,to: 4},
+				{text: "韩 - 中",from: 4,to: 1},
+				{text: "日 - 韩",from: 3,to: 4},
+				{text: "韩 - 日",from: 4,to: 3}
+			]
+			// 输入的语言类型
+			var from = 0
+			// 输出的语言类型
+			var to = 0
+			
+			// 1、初始化picker组件
+			var picker = new mui.PopPicker()
+			// 2、给picker对象添加数据
+			picker.setData(data)
+			// 为语言切换按钮绑定tap事件
+			mui("#yuyanBtn")[0].addEventListener("tap",function(){
+				// 3、显示picker，并获取选择的数据
+				picker.show(function (item) {
+					console.log(item)
+					// 修改语言切换按钮内容
+					mui("#yuyanSpan")[0].innerHTML = item[0].text
+					// 输入的语言类型
+					from = item[0].from
+					// 输出的语言类型
+					to = item[0].to
+				})
+			})
+			
+			//为“立即翻译”按钮绑定tap事件
+			mui("#fanyi")[0].addEventListener("tap",function(){
+				//获取待翻译内容
+				var text = mui("textarea")[0].value
+				//进行文本翻译
+				translate(text)
+			})
+			
+			//进行文本翻译
+			function translate(text){
+				// 显示系统等待对话框
+				plus.nativeUI.showWaiting("正在翻译，请稍后～")
+				mui.ajax(root + "/translate",{
+					type: "POST", //设置请求方式
+					data:{ //设置请求参数
+						text: text,
+						from: from,
+						to: to
+					},
+					crossDomain:true, //使用5+跨域
+					success:function(data){ //请求成功的处理函数
+						// 关闭系统等待对话框
+						plus.nativeUI.closeWaiting()
+						//将对象转换成JSON字符串进行查看
+						console.log(JSON.stringify(data))
+						if(data.code == 0){
+							//显示翻译结果
+							mui("textarea")[1].value = data.result
+						}else{
+							alert("翻译失败!")
+						}
+					},
+					error:function(){ //请求失败的处理函数
+						// 关闭系统等待对话框
+						plus.nativeUI.closeWaiting()
+						alert("请求失败!")
+					}
+				})
+			}
+			
+			//定义变量，用来存储当前设备的录音对象
+			var audio
+			//为麦克风图标绑定“按住”事件
+			mui("#micIcon")[0].addEventListener("hold",function(){
+				// console.log("按住了图标！")
+				//显示系统等待对话框
+				plus.nativeUI.showWaiting("正在聆听...")
+				//1.获取当前设备的录音对象
+				audio = plus.audio.getRecorder()
+				//2.调用设备麦克风进行录音
+				audio.record(
+					//对录音操作进行设置
+					{ format:"amr" },
+					//录音成功的处理函数
+					function(file){
+						console.log("录音成功！文件的保存路径为：" + file)
+						//上传语音文件，进行语音识别
+						uploadVoice(file)
+					},
+					//录音失败的处理函数
+					function(){
+						alert("录音失败！")
+					}
+				)
+			})
+			
+			//为麦克风图标绑定“松开”事件
+			mui("#micIcon")[0].addEventListener("release",function(){
+				// console.log("松开了图标！")
+				//3.结束录音
+				audio.stop()
+				//关闭系统等待对话框
+				plus.nativeUI.closeWaiting()
+			})
+			
+			//上传语音文件，进行语音识别
+			function uploadVoice(file){
+				//显示系统等待对话框
+				plus.nativeUI.showWaiting("正在识别，请稍候...")
+				//1.创建上传任务
+				var task = plus.uploader.createUpload(
+					//服务器端接口地址
+					root + "/speech/audio-to-text",
+					//设置请求方式
+					{ method:"POST" },
+					//上传任务完成后的处理函数
+					function(upload,status){
+						//4.处理上传结果
+						// console.log("上传结果状态码：" + status)
+						// console.log("服务器返回的数据：" + upload.responseText)
+						//关闭系统等待对话框
+						plus.nativeUI.closeWaiting()
+						if ( status == 200 ) { //上传成功
+							//将JSON字符串转换为对象
+							var result = JSON.parse(upload.responseText)
+							//判断服务器端是否操作成功
+							if(result.code == 0){ //服务器端操作成功
+								//显示识别结果
+								mui("textarea")[0].value = result.text
+							}else{ //服务器端操作失败
+								alert("语音识别失败！请重新讲话~")
+							}
+						}else{ //上传失败
+							alert("语音上传失败！请重新讲话~")
+						}
+					}
+				)
+				//2.向上传任务中添加文件
+				task.addFile(file,{key:"voice"})
+				//3.开始上传任务
+				task.start()
+			}
+			
+			// 为照相机图标绑定tap事件
+			mui("#cameraIcon")[0].addEventListener("tap",function(){
+				//1、获取摄像头管理对象
+				var camera = plus.camera.getCamera()
+				//2、进行拍照操作
+				camera.captureImage(
+					// 拍照成功的处理函数
+					function(path) {
+						console.log("拍照成功！图片的保存路径为：" + path)
+						//上传图片，进行文字识别
+						uploadImg(path)
+					},
+					// 拍照失败的处理函数
+					function() {
+						alert("拍照失败！")
+					},
+					// 对拍照进行设置
+					{
+						filename: "_doc/images/"
+					}
+				)
+			})
+			
+			//上传图片，进行文字识别
+			function uploadImg(path){
+				// 显示系统等待对话框
+				plus.nativeUI.showWaiting("正在识别，请稍候～")
+				// 1.创建上传任务
+				var task = plus.uploader.createUpload(
+					//服务器端接口地址
+					root + "/ocr",
+					//对上传任务进行设置
+					{ method: "POST" },
+					//上传任务完成的处理函数
+					function(upload, status) {
+						//4.处理上传结果
+						console.log("上传结果状态码：" + status)
+						console.log("服务器返回的数据：" + upload.responseText)
+						// 关闭系统等待对话框
+						plus.nativeUI.closeWaiting()
+						if(status == 200) { //上传成功
+							// 将JSON字符串转换为对象
+							var res = JSON.parse(upload.responseText) 
+							if(res.code == 0) { //识别成功
+								// alert("文字识别成功！")
+								//显示一个可以自动消失的提示消息
+								mui.toast("文字识别成功！",{type:"div"})
+								//将数组拼接成字符串
+								var text = res.results.join("\n")
+								//显示文字识别结果
+								mui("textarea")[0].value = text
+							} else { //识别失败
+								alert("文字识别失败！请重试~")
+							}
+						} else { //上传失败
+							alert("图片上传失败！请重试~")
+						}
+					}
+				)
+				// 2.向上传任务中添加图片
+				task.addFile(path, {key: "image"})
+				// 3.开始上传任务
+				task.start()
+			}
+			
+		</script>
+	</body>
+
+</html>
