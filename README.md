@@ -2,7 +2,7 @@
 [English](https://github.com/SuSheng13T/ZYDMP/blob/main/en.md)
 ## 关于本项目
 
-本项目是NemoCook开发的开源项目，由猿编程提供基础模版
+本项目是待春开发的开源项目，由猿编程提供基础模版
 
 ## 开源许可证
 
